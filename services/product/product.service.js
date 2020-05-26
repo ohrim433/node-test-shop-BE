@@ -1,9 +1,8 @@
-let products = require('../../db/products');
-
 class ProductService {
 
     productIsExist(productsList, id) {
         if (!id) return false;
+
         const getProductIndex = productsList.findIndex(product => product.id === id);
         return (getProductIndex > -1);
     }
@@ -25,10 +24,8 @@ class ProductService {
         return productsList[productId] = {...productsList[productId], id, title, type, price};
     }
 
-    deleteProduct(productId) {
-        return products.filter(product => {
-            return product.id !== productId;
-        });
+    deleteProduct(productsList, productId) {
+        return productsList.filter(product => product.id !== productId);
     }
 
 }

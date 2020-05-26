@@ -1,4 +1,4 @@
-let products = require('../../db/products');
+const products = require('../../db/products');
 const {productService} = require('../../services');
 
 module.exports = {
@@ -29,12 +29,9 @@ module.exports = {
     },
 
     deleteProduct: (req, res) => {
-        const {id} = +req.params;
-        products = productService.deleteProduct(id);
+        const {id} = req.params;
+        const updatedProducts = productService.deleteProduct(products, +id);
 
-        res.end(`updated list: ${JSON.stringify(products)}`);
+        res.end(`updated list: ${JSON.stringify(updatedProducts)}`);
     }
-
-
-
 }
