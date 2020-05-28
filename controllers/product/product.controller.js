@@ -1,37 +1,53 @@
-const products = require('../../db/products');
 const {productService} = require('../../services');
 
 module.exports = {
 
-    createProduct: (req, res) => {
-        productService.createNewProduct(req.body, products);
-        return res.end(`product has been added: ${JSON.stringify(req.body)} \n products list: ${JSON.stringify(products)}`);
+    getAllProducts: async (req, res) => {
+        let productsList = await productService.getProducts();
+
+        res.json(productsList);
     },
 
-    getAllProducts: (req, res) => {
-        const productsList = productService.getAllProducts(products);
+    createProduct: async (req, res) => {
+        try {
+            await productService.createProduct(req.body);
+        } catch (e) {
+            res.json(e.message);
+        }
 
-        res.end(`${JSON.stringify(productsList)}`);
+        res.end();
     },
 
-    getSingleProduct: (req, res) => {
+    getSingleProduct: async (req, res) => {
         const {id} = req.params;
-        const product = productService.getSingleProduct(products, +id);
+        try {
+            const product = await productService.getSingleProduct(id);
 
-        res.end(`${JSON.stringify(product)}`);
+            res.end(`${JSON.stringify(product)}`);
+        } catch (e) {
+            res.json(e.message);
+        }
     },
 
-    updateProduct: (req, res) => {
-        const {id} = +req.params;
-        const product = productService.updateProduct(products, id, req.body);
-
-        res.end(`updated product - ${JSON.stringify(product)} \n current products list: ${JSON.stringify(products)}`);
-    },
-
-    deleteProduct: (req, res) => {
+    deleteProduct: async (req, res) => {
         const {id} = req.params;
-        const updatedProducts = productService.deleteProduct(products, +id);
+        try {
+            await productService.deleteProduct(id);
+        } catch (e) {
+            res.json(e.message);
+        }
 
-        res.end(`updated list: ${JSON.stringify(updatedProducts)}`);
+        res.end();
+    },
+
+    updateProduct: async (req, res) => {
+        const {id} = req.params;
+        try {
+            await productService.updateProduct(id, req.body);
+
+            res.end();
+        } catch (e) {
+            res.json(e.message);
+        }
     }
 }
