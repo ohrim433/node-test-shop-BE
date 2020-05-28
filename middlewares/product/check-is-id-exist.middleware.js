@@ -3,10 +3,9 @@ const {productService} = require('../../services');
 module.exports = async (req, res, next) => {
     try {
         const {id} = req.params;
-        const products = await productService.getProducts();
-        const getProductIndex = await products.findIndex(product => product.id === +id);
+        const product = await productService.getSingleProduct(id);
 
-        if (getProductIndex < 0) {
+        if (!product) {
             throw new Error(`id ${id} does not exist`);
         }
 
