@@ -11,11 +11,11 @@ module.exports = {
     createProduct: async (req, res) => {
         try {
             await productService.createProduct(req.body);
+
+            res.sendStatus(201);  // The HTTP 201 Created success status response code
         } catch (e) {
             res.json(e.message);
         }
-
-        res.end();
     },
 
     getSingleProduct: async (req, res) => {
@@ -23,7 +23,7 @@ module.exports = {
         try {
             const product = await productService.getSingleProduct(id);
 
-            res.end(`${JSON.stringify(product)}`);
+            res.json(product);
         } catch (e) {
             res.json(e.message);
         }
@@ -32,7 +32,10 @@ module.exports = {
     deleteProduct: async (req, res) => {
         const {id} = req.params;
         try {
-            await productService.deleteProduct(id);
+            const isSuccess = await productService.deleteProduct(id);
+
+            // The HTTP 204 No Content success status response code
+            isSuccess ? res.sendStatus(204) : res.json({deleted: true});
         } catch (e) {
             res.json(e.message);
         }
@@ -42,10 +45,12 @@ module.exports = {
 
     updateProduct: async (req, res) => {
         const {id} = req.params;
+        const product = req.body;
         try {
-            await productService.updateProduct(id, req.body);
+            const [isSuccess] = await productService.updateProduct(id, product);
 
-            res.end();
+            // The HTTP 200 OK success status response code indicates that the request has succeeded
+            isSuccess ? res.sendStatus(200) : res.json({updated: false});
         } catch (e) {
             res.json(e.message);
         }

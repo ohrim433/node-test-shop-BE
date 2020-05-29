@@ -7,16 +7,19 @@ const productRouter = Router();
 // get all products
 productRouter.get('/', productController.getAllProducts);
 
-// get single product
-productRouter.get('/:id', checkIsIdExist, productController.getSingleProduct);
-
 // create new product
 productRouter.post('/', checkIsDataValid, productController.createProduct);
 
+// use checkIsIdExist middleware
+productRouter.use('/:id', checkIsIdExist);
+
+// get single product
+productRouter.get('/:id', productController.getSingleProduct);
+
 // delete product
-productRouter.delete('/:id', checkIsIdExist, productController.deleteProduct);
+productRouter.delete('/:id', productController.deleteProduct);
 
 // update product
-productRouter.put('/:id', checkIsIdExist, checkIsDataValid, productController.updateProduct);
+productRouter.put('/:id', checkIsDataValid, productController.updateProduct);
 
 module.exports = productRouter;

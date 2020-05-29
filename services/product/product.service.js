@@ -17,25 +17,15 @@ class ProductService {
         return ProductModel.findByPk(productId);
     }
 
-    async deleteProduct(productId) {
+    async deleteProduct(id) {
         const ProductModel = await db.getModel('Product');
-        return ProductModel.destroy({
-            where: {
-                id: productId
-            }
-        });
+        return ProductModel.destroy({where: {id}});
     }
 
-    async updateProduct(productId, newProduct) {
+    async updateProduct(id, newProduct) {
         const ProductModel = await db.getModel('Product');
-        ProductModel.update(newProduct,
-            {
-                where: {
-                    id: productId
-                }
-            });
+        return ProductModel.update(newProduct, {where: {id}});
     }
-
 }
 
 module.exports = new ProductService;
