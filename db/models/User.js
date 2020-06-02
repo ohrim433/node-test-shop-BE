@@ -1,29 +1,29 @@
-const {dbNames: {PRODUCTSTABLE}, modelNames: {PRODUCT}} = require('../../constants');
+const {dbNames: {USERSTABLE}, modelNames: {USER}} = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
-    const Product = sequelize.define(PRODUCT, {
+    const User = sequelize.define(USER, {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            title: {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            type: {
+            email: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            price: {
-                type: DataTypes.INTEGER,
+            password: {
+                type: DataTypes.STRING,
                 allowNull: false
             }
         },
         {
-            tableName: PRODUCTSTABLE,
+            tableName: USERSTABLE,
             timestamps: false
         })
 
-    return Product;
+    return User;
 }

@@ -1,6 +1,7 @@
 const {Router} = require('express');
+
 const {productController} = require('../../controllers');
-const {checkIsIdExist, checkIsDataValid} = require('../../middlewares');
+const {checkIsProductIdExist, checkIsProductDataValid} = require('../../middlewares');
 
 const productRouter = Router();
 
@@ -8,18 +9,18 @@ const productRouter = Router();
 productRouter.get('/', productController.getAllProducts);
 
 // create new product
-productRouter.post('/', checkIsDataValid, productController.createProduct);
+productRouter.post('/', checkIsProductDataValid, productController.createProduct);
 
 // use checkIsIdExist middleware
-productRouter.use('/:id', checkIsIdExist);
+productRouter.use('/:productId', checkIsProductIdExist);
 
 // get single product
-productRouter.get('/:id', productController.getSingleProduct);
+productRouter.get('/:productId', productController.getSingleProduct);
 
 // delete product
-productRouter.delete('/:id', productController.deleteProduct);
+productRouter.delete('/:productId', productController.deleteProduct);
 
 // update product
-productRouter.put('/:id', checkIsDataValid, productController.updateProduct);
+productRouter.put('/:productId', checkIsProductDataValid, productController.updateProduct);
 
 module.exports = productRouter;

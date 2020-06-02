@@ -3,9 +3,9 @@ const {productService} = require('../../services');
 module.exports = {
 
     getAllProducts: async (req, res) => {
-        let productsList = await productService.getProducts();
+        let products = await productService.getProducts();
 
-        res.json(productsList);
+        res.json(products);
     },
 
     createProduct: async (req, res) => {
@@ -19,14 +19,16 @@ module.exports = {
     },
 
     getSingleProduct: async (req, res) => {
-        const {id} = req.params;
-        try {
-            const product = await productService.getSingleProduct(id);
+        // const {id} = req.params;
+        // try {
+        //     const product = await productService.getSingleProduct(id);
+        //
+        //     res.json(product);
+        // } catch (e) {
+        //     res.json(e.message);
+        // }
 
-            res.json(product);
-        } catch (e) {
-            res.json(e.message);
-        }
+        res.json(req.product);
     },
 
     deleteProduct: async (req, res) => {

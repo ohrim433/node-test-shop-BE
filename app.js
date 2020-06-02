@@ -1,5 +1,5 @@
 const express = require('express');
-const {productRouter} = require('./routes');
+const {productRouter, userRouter} = require('./routes');
 
 const app = express();
 
@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.use('/product', productRouter);
+app.use('/user', userRouter);
 
 // Run server
 app.listen(5600, (err) => {
