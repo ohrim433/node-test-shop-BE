@@ -1,7 +1,7 @@
 const {Router} = require('express');
 
 const {userController} = require('../../controllers');
-const {checkIsProductIdExist, checkIsProductDataValid} = require('../../middlewares');
+const {checkIsUserDataValid, checkIsUserIdExist} = require('../../middlewares');
 
 const userRouter = Router();
 
@@ -9,22 +9,21 @@ const userRouter = Router();
 userRouter.get('/', userController.getAllUsers);
 
 // create new user
-userRouter.post('/',
-    // checkIsUserDataValid,
-    userController.createUser);
+userRouter.post('/', checkIsUserDataValid, userController.createUser);
+
+//login user (temporary)
+userRouter.post('/auth', userController.loginUser);
 
 // use checkIsIdExist middleware
-// userRouter.use('/:userId', checkIsProductIdExist);
+userRouter.use('/:userId', checkIsUserIdExist);
 
-// get single product
+// get single user
 userRouter.get('/:userId', userController.getSingleUser);
 
-// delete product
+// delete user
 userRouter.delete('/:userId', userController.deleteUser);
 
-// update product
-userRouter.put('/:userId',
-    // checkIsProductDataValid,
-    userController.updateUser);
+// update user
+userRouter.put('/:userId', checkIsUserDataValid, userController.updateUser);
 
 module.exports = userRouter;

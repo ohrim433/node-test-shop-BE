@@ -1,4 +1,5 @@
 const {productService} = require('../../services');
+const {ErrorHandler} = require('../../errors');
 
 module.exports = {
 
@@ -8,44 +9,36 @@ module.exports = {
         res.json(products);
     },
 
-    createProduct: async (req, res) => {
+    createProduct: async (req, res, next) => {
         try {
-            await productService.createProduct(req.body);
+            const product = req.body;
+
+            await productService.createProduct(product);
 
             res.sendStatus(201);  // The HTTP 201 Created success status response code
         } catch (e) {
-            res.json(e.message);
+            next(e.message);
         }
     },
 
     getSingleProduct: async (req, res) => {
-        // const {id} = req.params;
-        // try {
-        //     const product = await productService.getSingleProduct(id);
-        //
-        //     res.json(product);
-        // } catch (e) {
-        //     res.json(e.message);
-        // }
-
         res.json(req.product);
     },
 
-    deleteProduct: async (req, res) => {
-        const {id} = req.params;
+    deleteProduct: async (req, res, next) => {
+        const {productId} = req.params;
         try {
-            const isSuccess = await productService.deleteProduct(id);
+            await productService.deleteProduct({id: productId});
 
-            // The HTTP 204 No Content success status response code
-            isSuccess ? res.sendStatus(204) : res.json({deleted: true});
+            res.sendStatus(204);
         } catch (e) {
-            res.json(e.message);
+            next(e.message);
         }
 
         res.end();
     },
 
-    updateProduct: async (req, res) => {
+    updateProduct: async (req, res, next) => {
         const {id} = req.params;
         const product = req.body;
         try {
@@ -54,7 +47,7 @@ module.exports = {
             // The HTTP 200 OK success status response code indicates that the request has succeeded
             isSuccess ? res.sendStatus(200) : res.json({updated: false});
         } catch (e) {
-            res.json(e.message);
+            next(e.message);
         }
     }
 }

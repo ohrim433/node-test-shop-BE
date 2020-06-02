@@ -1,4 +1,6 @@
 const {userService} = require('../../services');
+const {hashPassword, checkHashedPasswords} = require('../../helpers');
+const {ErrorHandler} = require('../../errors');
 
 module.exports = {
 
@@ -8,51 +10,65 @@ module.exports = {
         res.json(usersList);
     },
 
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
-            await userService.createUser(req.body);
+            const user = req.body;
+
+            user.password = await hashPassword(user.password);
+
+            await userService.createUser(user);
 
             res.sendStatus(201);  // The HTTP 201 Created success status response code
         } catch (e) {
-            res.json(e.message);
+            next(e.message);
         }
     },
 
-    getSingleUser: async (req, res) => {
-        const {userId} = req.params;
-        try {
-            const user = await userService.getSingleUser(userId);
-
-            res.json(user);
-        } catch (e) {
-            res.json(e.message);
-        }
+    getSingleUser: async (req, res, next) => {
+        res.json(req.user);
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         const {userId} = req.params;
         try {
-            const isSuccess = await userService.deleteUser(userId);
+            await userService.deleteUser({id: userId});
 
-            // The HTTP 204 No Content success status response code
-            isSuccess ? res.sendStatus(204) : res.json({deleted: true});
+            res.sendStatus(204);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
         res.end();
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         const {userId} = req.params;
         const user = req.body;
         try {
             const [isSuccess] = await userService.updateUser(userId, user);
 
             // The HTTP 200 OK success status response code indicates that the request has succeeded
-            isSuccess ? res.sendStatus(200) : res.json({updated: false});
+            isSuccess ? res.sendStatus(200) : next(new ErrorHandler('New data is not valid', 406, 4061));
         } catch (e) {
-            res.json(e.message);
+            next(e);
+        }
+    },
+
+    loginUser: async (req, res, next) => {
+        try {
+            const {email, password} = req.body;
+
+            const user = await userService.getSingleUser({email});
+
+            if (!user) {
+                return next(new ErrorHandler('Data is incorrect', 404, 4041));
+            }
+
+            await checkHashedPasswords(user.password, password);
+
+            res.json(user);
+        } catch (e) {
+            next(e);
         }
     }
 }

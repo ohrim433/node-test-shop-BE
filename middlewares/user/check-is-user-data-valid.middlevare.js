@@ -1,13 +1,13 @@
 const Joi = require('joi');
 
-const {newProductValidationSchema} = require('../../validators');
+const {newUserValidationSchema} = require('../../validators');
 const {ErrorHandler} = require('../../errors');
 
 module.exports = (req, res, next) => {
     try {
-        const product = req.body;
+        const user = req.body;
 
-        const {error} = Joi.validate(product, newProductValidationSchema);
+        const {error} = Joi.validate(user, newUserValidationSchema);
 
         if (error) {
             return next(new ErrorHandler(error.details[0].message, 400))

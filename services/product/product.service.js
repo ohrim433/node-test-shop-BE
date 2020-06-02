@@ -19,9 +19,9 @@ class ProductService {
         return ProductModel.findByPk(id);
     }
 
-    async deleteProduct(id) {
+    async deleteProduct(params) {
         const ProductModel = await db.getModel(PRODUCT);
-        return ProductModel.destroy({where: {id}});
+        return ProductModel.destroy({where: params});
     }
 
     async updateProduct(id, newProduct) {

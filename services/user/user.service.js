@@ -14,14 +14,14 @@ class UserService {
         UserModel.create(user);
     }
 
-    async getSingleUser(id) {
+    async getSingleUser(params) {
         const UserModel = await db.getModel(USER);
-        return UserModel.findByPk(id);
+        return UserModel.findOne({where: params});
     }
 
-    async deleteUser(id) {
+    async deleteUser(params) {
         const UserModel = await db.getModel(USER);
-        return UserModel.destroy({where: {id}});
+        return UserModel.destroy({where: params});
     }
 
     async updateUser(id, newUser) {
