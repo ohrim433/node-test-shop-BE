@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 
         if (isNaN(userId) || +userId < 0) return next(new ErrorHandler('Incorrect id', 400, 4001));
 
-        const user = await userService.getSingleUser({id: userId});
+        const user = await userService.getUserByParams({id: userId});
 
         if (!user) return next(new ErrorHandler('Not found', 404, 4041));
 

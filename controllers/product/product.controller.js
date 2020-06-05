@@ -17,7 +17,7 @@ module.exports = {
 
             res.sendStatus(201);  // The HTTP 201 Created success status response code
         } catch (e) {
-            next(e.message);
+            next(new ErrorHandler(e));
         }
     },
 
@@ -28,11 +28,11 @@ module.exports = {
     deleteProduct: async (req, res, next) => {
         const {productId} = req.params;
         try {
-            await productService.deleteProduct({id: productId});
+            await productService.deleteByParams({id: productId});
 
             res.sendStatus(204);
         } catch (e) {
-            next(e.message);
+            next(new ErrorHandler(e));
         }
 
         res.end();
@@ -45,9 +45,9 @@ module.exports = {
             const [isSuccess] = await productService.updateProduct(id, product);
 
             // The HTTP 200 OK success status response code indicates that the request has succeeded
-            isSuccess ? res.sendStatus(200) : res.json({updated: false});
+            isSuccess ? res.sendStatus(200) : next(new ErrorHandler('New data is not valid', 406, 4061));
         } catch (e) {
-            next(e.message);
+            next(new ErrorHandler(e));
         }
     }
 }

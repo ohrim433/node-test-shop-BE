@@ -1,5 +1,5 @@
 const express = require('express');
-const {productRouter, userRouter, authRouter} = require('./routes');
+const {authRouter, productRouter, userRouter} = require('./routes');
 
 const app = express();
 
@@ -12,12 +12,19 @@ app.use(express.urlencoded());
 
 app.use('/product', productRouter);
 app.use('/user', userRouter);
+app.use('/auth', authRouter);
 
 app.use('*', (err, req, res, next) => {
+    let message = err.message;
+
+    if (err.parent) {
+        message = err.parent.sqlMessage;
+    }
+
     res
         .status(err.status || 400)
         .json({
-            message: err.message,
+            message,
             code: err.customCode
         })
 })

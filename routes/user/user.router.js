@@ -11,9 +11,6 @@ userRouter.get('/', userController.getAllUsers);
 // create new user
 userRouter.post('/', checkIsUserDataValid, userController.createUser);
 
-//login user (temporary)
-userRouter.post('/auth', userController.loginUser);
-
 // use checkIsIdExist middleware
 userRouter.use('/:userId', checkIsUserIdExist);
 

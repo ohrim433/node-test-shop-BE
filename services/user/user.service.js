@@ -14,9 +14,14 @@ class UserService {
         UserModel.create(user);
     }
 
-    async getSingleUser(params) {
+    async getUserByParams(params) {
         const UserModel = await db.getModel(USER);
         return UserModel.findOne({where: params});
+    }
+
+    async getUserById(id) {
+        const UserModel = await db.getModel(USER);
+        return UserModel.findByPk(id);
     }
 
     async deleteUser(params) {

@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 
         if (isNaN(productId) || +productId < 0) return next(new ErrorHandler('Incorrect id', 400, 4001));
 
-        const product = await productService.getSingleProduct(productId);
+        const product = await productService.getProductById(productId);
 
         if (!product) return next(new ErrorHandler('Not found', 404, 4041));
 

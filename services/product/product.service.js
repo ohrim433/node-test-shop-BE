@@ -14,12 +14,12 @@ class ProductService {
         ProductModel.create(product);
     }
 
-    async getSingleProduct(id) {
+    async getProductById(id) {
         const ProductModel = await db.getModel(PRODUCT);
         return ProductModel.findByPk(id);
     }
 
-    async deleteProduct(params) {
+    async deleteByParams(params) {
         const ProductModel = await db.getModel(PRODUCT);
         return ProductModel.destroy({where: params});
     }
