@@ -1,4 +1,6 @@
 const express = require('express');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
 const {authRouter, productRouter, userRouter} = require('./routes');
 
 const app = express();
@@ -6,9 +8,15 @@ const app = express();
 const db = require('./db').getInstance();
 db.setModels();
 
+dotenv.config();
+
+const {PORT} = require('./config');
+
 // Create server
 app.use(express.json());
 app.use(express.urlencoded());
+
+app.use(morgan('dev'));
 
 app.use('/product', productRouter);
 app.use('/user', userRouter);
@@ -30,11 +38,11 @@ app.use('*', (err, req, res, next) => {
 })
 
 // Run server
-app.listen(5600, (err) => {
+app.listen(PORT, (err) => {
     if (err) {
         console.log(err);
     } else {
-        console.log('Server is running on port 5600');
+        console.log(`Server is running on port ${PORT}`);
     }
 });
 
