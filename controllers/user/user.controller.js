@@ -1,6 +1,7 @@
-const {userService} = require('../../services');
-const {hashPassword, checkHashedPasswords} = require('../../helpers');
+const {emailActions} = require('../../constants');
 const {ErrorHandler} = require('../../errors');
+const {checkHashedPasswords, hashPassword} = require('../../helpers');
+const {emailService, userService} = require('../../services');
 
 module.exports = {
 
@@ -18,9 +19,15 @@ module.exports = {
 
             await userService.createUser(user);
 
+            await emailService.sendMail(
+                user.email,
+                emailActions.USER_REGISTER,
+                {userName: user.name}
+            );
+
             res.sendStatus(201);  // The HTTP 201 Created success status response code
         } catch (e) {
-            next(new ErrorHandler(e));
+            next(e);
         }
     },
 
@@ -30,12 +37,18 @@ module.exports = {
 
     deleteUser: async (req, res, next) => {
         const {userId} = req.params;
+        const user = req.user;
         try {
             await userService.deleteUser({id: userId});
 
+            await emailService.sendMail(
+                user.email,
+                emailActions.USER_DELETE,
+                {userName: user.name});
+
             res.sendStatus(204);
         } catch (e) {
-            next(new ErrorHandler(e));
+            next(e);
         }
 
         res.end();
@@ -45,14 +58,18 @@ module.exports = {
         const {userId} = req.params;
         const user = req.body;
 
-        user.password = await hashPassword(user.password);
         try {
-            const [isSuccess] = await userService.updateUser(userId, user);
+            await userService.updateUser(userId, user);
+
+            await emailService.sendMail(
+                req.user.email,
+                emailActions.USER_UPDATE,
+                {userId, userName: user.name, userAge: user.age});
 
             // The HTTP 200 OK success status response code indicates that the request has succeeded
-            isSuccess ? res.sendStatus(200) : next(new ErrorHandler('New data is not valid', 406, 4061));
+            res.sendStatus(200)
         } catch (e) {
-            next(new ErrorHandler(e));
+            next(e);
         }
     },
 
@@ -63,14 +80,14 @@ module.exports = {
             const user = await userService.getUserByParams({email});
 
             if (!user) {
-                return next(new ErrorHandler('Data is incorrect 111', 404, 4041));
+                return next(new ErrorHandler('Data is incorrect', 404, 4041));
             }
 
             await checkHashedPasswords(user.password, password);
 
             res.json(user);
         } catch (e) {
-            next(new ErrorHandler(e));
+            next(e);
         }
     }
 }

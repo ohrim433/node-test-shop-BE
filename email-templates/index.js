@@ -17,7 +17,7 @@ module.exports = {
     },
 
     [emailActions.USER_DELETE]: {
-        subject: '[Shop] We hope to see you soon again!',
+        subject: '[Shop] User was deleted',
         templateFileName: 'delete-user'
     },
 

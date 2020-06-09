@@ -43,7 +43,7 @@ module.exports = async (req, res, next) => {
             ))
         }
 
-        req.user_id = tokensFromDB.userId;
+        req.userId = tokensFromDB.userId;
 
         next();
     } catch (e) {

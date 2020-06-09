@@ -1,4 +1,4 @@
-const {dbNames: {PRODUCTS_TABLE}, modelNames: {PRODUCT}} = require('../../constants');
+const {dbNames: {DB_PRODUCTS_TABLE}, modelNames: {PRODUCT}} = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define(PRODUCT, {
@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             price: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.DOUBLE,
                 allowNull: false
             }
         },
         {
-            tableName: PRODUCTS_TABLE,
+            tableName: DB_PRODUCTS_TABLE,
             timestamps: false
         })
 

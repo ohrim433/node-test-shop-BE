@@ -1,24 +1,24 @@
 const Sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const {dbNames: {DATABASE, USERNAME, PASSWORD, HOST, DIALECT}, dbFolders: {DBROOTFOLDER, MODELSROOTFOLDER}} = require('../constants');
+const {dbNames: {DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_DIALECT}, dbFolders: {DB_ROOT_FOLDER, MODELS_ROOT_FOLDER}} = require('../constants');
 
 module.exports = (() => {
     let instance;
 
     function initConnection() {
-        const client = new Sequelize(DATABASE, USERNAME, PASSWORD, {
-            host: HOST,
-            dialect: DIALECT,
+        const client = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+            host: DB_HOST,
+            dialect: DB_DIALECT,
         });
 
         let models = {};
 
         function getModels() {
-            fs.readdir(path.join(process.cwd(), DBROOTFOLDER, MODELSROOTFOLDER), (err, files) => {
+            fs.readdir(path.join(process.cwd(), DB_ROOT_FOLDER, MODELS_ROOT_FOLDER), (err, files) => {
                 files.forEach(file => {
                     const [modelName] = file.split('.');
-                    models[modelName] = client.import(path.join(process.cwd(), DBROOTFOLDER, MODELSROOTFOLDER, modelName));
+                    models[modelName] = client.import(path.join(process.cwd(), DB_ROOT_FOLDER, MODELS_ROOT_FOLDER, modelName));
                 })
             })
         }

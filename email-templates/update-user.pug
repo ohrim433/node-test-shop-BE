@@ -1,0 +1,8 @@
+extends template
+block content
+    div.w-800.message
+        p User id = #{userId} was updated!
+        | actual data is:
+        ul
+            li name: #{userName}
+            li age: #{userAge}

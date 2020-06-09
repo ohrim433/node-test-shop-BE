@@ -1,4 +1,4 @@
-const {dbNames: {USERS_TABLE}, modelNames: {USER}} = require('../../constants');
+const {dbNames: {DB_USERS_TABLE}, modelNames: {USER}} = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(USER, {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         {
-            tableName: USERS_TABLE,
+            tableName: DB_USERS_TABLE,
             timestamps: false
         })
 

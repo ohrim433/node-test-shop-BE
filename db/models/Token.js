@@ -1,4 +1,4 @@
-const {dbNames: {TOKENS_TABLE}, modelNames: {TOKEN}} = require('../../constants');
+const {dbNames: {DB_TOKENS_TABLE}, modelNames: {TOKEN}} = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
     const Token = sequelize.define(TOKEN, {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         {
-            tableName: TOKENS_TABLE,
+            tableName: DB_TOKENS_TABLE,
             timestamps: false
         })
 
