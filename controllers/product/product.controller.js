@@ -2,7 +2,6 @@ const {emailActions} = require('../../constants');
 const {emailService, productService, userService} = require('../../services');
 
 module.exports = {
-
     getAllProducts: async (req, res) => {
         let products = await productService.getProducts();
 

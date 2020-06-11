@@ -4,8 +4,8 @@ const {modelNames: {USER}} = require('../../constants');
 
 class UserService {
 
-    getUsers() {
-        const UserModel = db.getModel(USER);
+    async getUsers() {
+        const UserModel = await db.getModel(USER);
         return UserModel.findAll({});
     }
 

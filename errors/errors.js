@@ -1,4 +1,10 @@
 module.exports = {
+    //
+    NOT_VALID_ID: {
+      message: 'Not valid id',
+      code: 4001
+    },
+
     // Bad request
     NO_TOKEN: {
         message: 'No token',

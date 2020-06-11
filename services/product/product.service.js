@@ -4,8 +4,8 @@ const {modelNames: {PRODUCT}} = require('../../constants');
 
 class ProductService {
 
-    getProducts() {
-        const ProductModel = db.getModel(PRODUCT);
+    async getProducts() {
+        const ProductModel = await db.getModel(PRODUCT);
         return ProductModel.findAll({});
     }
 

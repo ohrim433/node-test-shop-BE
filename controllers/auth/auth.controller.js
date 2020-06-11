@@ -7,11 +7,9 @@ const {checkHashedPasswords, tokenGenerator} = require('../../helpers');
 const {authService, userService} = require('../../services');
 
 module.exports = {
-
     loginUser: async (req, res, next) => {
         try {
             const {email, password} = req.body;
-
             const user = await userService.getUserByParams({email});
 
             if (!user) {
@@ -50,7 +48,6 @@ module.exports = {
         try {
             const refresh_token = req.get(AUTHORIZATION);
             const userId = req.userId;
-
             const user = await userService.getUserById(userId);
 
             if (!user) {

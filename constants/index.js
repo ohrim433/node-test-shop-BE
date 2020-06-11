@@ -7,3 +7,5 @@ module.exports.requestHeaders = require('./request-headers');
 module.exports.responceStatusCodes = require('./responce-status-codes');
 module.exports.tokenWords = require('./token-words');
 module.exports.tokenExpires = require('./token-expires');
+module.exports.emailSubjects = require('./email-subjects.constants');
+module.exports.emailTemplatesNames = require('./email-templates-names.constants');

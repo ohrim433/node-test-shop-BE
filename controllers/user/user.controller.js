@@ -1,10 +1,9 @@
-const {emailActions} = require('../../constants');
-const {ErrorHandler} = require('../../errors');
+const {emailActions, responceStatusCodes} = require('../../constants');
+const {ErrorHandler, errors: {NOT_FOUND}} = require('../../errors');
 const {checkHashedPasswords, hashPassword} = require('../../helpers');
 const {emailService, userService} = require('../../services');
 
 module.exports = {
-
     getAllUsers: async (req, res) => {
         let usersList = await userService.getUsers();
 
@@ -36,9 +35,10 @@ module.exports = {
     },
 
     deleteUser: async (req, res, next) => {
-        const {userId} = req.params;
-        const user = req.user;
         try {
+            const {userId} = req.params;
+            const user = req.user;
+
             await userService.deleteUser({id: userId});
 
             await emailService.sendMail(
@@ -55,10 +55,10 @@ module.exports = {
     },
 
     updateUser: async (req, res, next) => {
-        const {userId} = req.params;
-        const user = req.body;
-
         try {
+            const {userId} = req.params;
+            const user = req.body;
+
             await userService.updateUser(userId, user);
 
             await emailService.sendMail(
@@ -76,11 +76,14 @@ module.exports = {
     loginUser: async (req, res, next) => {
         try {
             const {email, password} = req.body;
-
             const user = await userService.getUserByParams({email});
 
             if (!user) {
-                return next(new ErrorHandler('Data is incorrect', 404, 4041));
+                return next(new ErrorHandler(
+                    NOT_FOUND.message,
+                    responceStatusCodes.NOT_FOUND,
+                    NOT_FOUND.code
+                ));
             }
 
             await checkHashedPasswords(user.password, password);

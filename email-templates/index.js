@@ -1,33 +1,33 @@
-const {emailActions} = require('../constants');
+const {emailActions, emailSubjects, emailTemplatesNames} = require('../constants');
 
 module.exports = {
     [emailActions.PRODUCT_CREATE]: {
-        subject: '[Shop] New product was added',
-        templateFileName: 'new-product'
+        subject: emailSubjects.NEW_PRODUCT_SUBJECT,
+        templateFileName: emailTemplatesNames.NEW_PRODUCT
     },
 
     [emailActions.PRODUCT_DELETE]: {
-        subject: '[Shop] Product was deleted',
-        templateFileName: 'delete-product'
+        subject: emailSubjects.DELETE_PRODUCT_SUBJECT,
+        templateFileName: emailTemplatesNames.DELETE_PRODUCT
     },
 
     [emailActions.PRODUCT_UPDATE]: {
-        subject: '[Shop] Product was updated',
-        templateFileName: 'update-product'
+        subject: emailSubjects.UPDATE_PRODUCT_SUBJECT,
+        templateFileName: emailTemplatesNames.UPDATE_PRODUCT
     },
 
     [emailActions.USER_DELETE]: {
-        subject: '[Shop] User was deleted',
-        templateFileName: 'delete-user'
+        subject: emailSubjects.DELETE_USER_SUBJECT,
+        templateFileName: emailTemplatesNames.DELETE_USER
     },
 
     [emailActions.USER_REGISTER]: {
-        subject: '[Shop] Welcome to our shop!',
-        templateFileName: 'register-user'
+        subject: emailSubjects.NEW_USER_SUBJECT,
+        templateFileName: emailTemplatesNames.NEW_USER
     },
 
     [emailActions.USER_UPDATE]: {
-        subject: '[Shop] Your profile was updated',
-        templateFileName: 'update-user'
+        subject: emailSubjects.UPDATE_USER_SUBJECT,
+        templateFileName: emailTemplatesNames.UPDATE_USER
     }
 }
