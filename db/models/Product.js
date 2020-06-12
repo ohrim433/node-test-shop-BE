@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DOUBLE,
                 allowNull: false
             },
-            photo: {
-                type: DataTypes.STRING
+            createdBy: {
+                type: DataTypes.INTEGER,
             },
-            file: {
+            photo: {
                 type: DataTypes.STRING
             }
         },

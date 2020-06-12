@@ -1,6 +1,6 @@
 module.exports = {
     PHOTO_MIMETYPES: [
-        'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/webp'
+        'image/jpeg', 'image/png'
     ],
 
     DOC_MIMETYPES: [

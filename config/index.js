@@ -5,5 +5,7 @@ module.exports = {
 
     PORT: process.env.PORT || 5600,
 
-    FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5600'
+    FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5600',
+
+    CRON_JOB_INTERVAL: process.env.CRON_JOB_INTERVAL || '50 * * * * *'
 }

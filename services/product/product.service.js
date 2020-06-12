@@ -11,12 +11,17 @@ class ProductService {
 
     async createProduct(product) {
         const ProductModel = await db.getModel(PRODUCT);
-        ProductModel.create(product);
+        return ProductModel.create(product);
     }
 
     async getProductById(id) {
         const ProductModel = await db.getModel(PRODUCT);
         return ProductModel.findByPk(id);
+    }
+
+    async getProductsByParams(params) {
+        const ProductModel = await db.getModel(PRODUCT);
+        return ProductModel.findAll({where: params});
     }
 
     async deleteByParams(params) {
@@ -28,6 +33,7 @@ class ProductService {
         const ProductModel = await db.getModel(PRODUCT);
         return ProductModel.update(newProduct, {where: {id}});
     }
+
 }
 
 module.exports = new ProductService;

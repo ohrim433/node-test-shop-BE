@@ -1,4 +1,5 @@
-const {emailActions} = require('../../constants');
+const {dbNames: {DB_PRODUCTS_TABLE}, emailActions, responceStatusCodes} = require('../../constants');
+const {fileUpload} = require('../../helpers');
 const {emailService, productService, userService} = require('../../services');
 
 module.exports = {
@@ -12,23 +13,30 @@ module.exports = {
         try {
             const product = req.body;
             const userId = req.userId;
+            const [photo] = req.photos;
 
-            await productService.createProduct(product);
+            const {id} = await productService.createProduct(product);
 
-            const user = await userService.getUserById(userId);
+            const {name, email} = await userService.getUserById(userId);
+
+            if (photo) {
+                await fileUpload(photo, 'products', 'photos', DB_PRODUCTS_TABLE, userId, id);
+            } else {
+                await productService.updateProduct(id, {createdBy: userId});
+            }
 
             await emailService.sendMail(
-                user.email,
+                email,
                 emailActions.PRODUCT_CREATE,
                 {
-                    userName: user.name,
+                    userName: name,
                     productTitle: product.title,
                     productType: product.type,
                     productPrice: product.price
                 }
             );
 
-            res.sendStatus(201);  // The HTTP 201 Created success status response code
+            res.sendStatus(responceStatusCodes.CREATED);  // The HTTP 201 Created success status response code
         } catch (e) {
             next(e);
         }
@@ -57,7 +65,7 @@ module.exports = {
                 }
             );
 
-            res.sendStatus(204);
+            res.sendStatus(responceStatusCodes.NO_CONTENT);
         } catch (e) {
             next(e);
         }
@@ -86,8 +94,7 @@ module.exports = {
                 }
             );
 
-            // The HTTP 200 OK success status response code indicates that the request has succeeded
-            res.sendStatus(200);
+            res.sendStatus(responceStatusCodes.OK);
         } catch (e) {
             next(e);
         }
