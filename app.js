@@ -1,5 +1,7 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
 const {authRouter, productRouter, userRouter} = require('./routes');
 
@@ -14,6 +16,8 @@ db.setModels();
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use(fileUpload({}));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('short'));
 
 app.use('/product', productRouter);

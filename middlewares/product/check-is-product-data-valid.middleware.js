@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const {responceStatusCodes} = require('../../constants')
 const {ErrorHandler} = require('../../errors');
-const {productValidators: {newProductValidationSchema}} = require('../../validators');
+const {newProductValidationSchema} = require('../../validators');
 
 module.exports = (req, res, next) => {
     try {

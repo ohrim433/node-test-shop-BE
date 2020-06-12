@@ -1,7 +1,11 @@
 const {Router} = require('express');
 
 const {userController} = require('../../controllers');
-const {checkIsUserDataValid, checkIsUserIdExist} = require('../../middlewares');
+const {
+    checkIsUserDataValid,
+    checkIsUserIdExist,
+    filesMiddleware: {checkIsAvatarValid}
+} = require('../../middlewares');
 
 const userRouter = Router();
 
@@ -9,7 +13,7 @@ const userRouter = Router();
 userRouter.get('/', userController.getAllUsers);
 
 // create new user
-userRouter.post('/', checkIsUserDataValid, userController.createUser);
+userRouter.post('/', checkIsUserDataValid, checkIsAvatarValid, userController.createUser);
 
 // use checkIsIdExist middleware
 userRouter.use('/:userId', checkIsUserIdExist);
@@ -21,6 +25,6 @@ userRouter.get('/:userId', userController.getSingleUser);
 userRouter.delete('/:userId', userController.deleteUser);
 
 // update user
-userRouter.put('/:userId', checkIsUserDataValid, userController.updateUser);
+userRouter.put('/:userId', checkIsUserDataValid, checkIsAvatarValid, userController.updateUser);
 
 module.exports = userRouter;

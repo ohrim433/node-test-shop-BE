@@ -4,3 +4,4 @@ module.exports.checkIsUserIdExist = require('./user/check-is-user-id-exist.middl
 module.exports.checkIsUserDataValid = require('./user/check-is-user-data-valid.middlevare');
 module.exports.checkAccessToken = require('./auth/check-access-token.middleware');
 module.exports.checkRefreshToken = require('./auth/check-refresh-token.middleware');
+module.exports.filesMiddleware = require('./files');

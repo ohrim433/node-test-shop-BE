@@ -1,3 +1,7 @@
+const fs = require('fs-extra').promises;
+const path = require('path');
+const uuid = require('uuid').v1();
+
 const {emailActions, responceStatusCodes} = require('../../constants');
 const {ErrorHandler, errors: {NOT_FOUND}} = require('../../errors');
 const {checkHashedPasswords, hashPassword} = require('../../helpers');
@@ -13,10 +17,21 @@ module.exports = {
     createUser: async (req, res, next) => {
         try {
             const user = req.body;
+            const [avatar] = req.photos;
 
             user.password = await hashPassword(user.password);
 
-            await userService.createUser(user);
+            const {id} = await userService.createUser(user);
+
+            if (avatar) {
+                const photoDir = `users/${id}/photos`;
+                const fileExtension = avatar.name.split('.').pop();
+                const photoName = `${uuid}.${fileExtension}`;
+
+                await fs.mkdir(path.resolve(process.cwd(), 'public', photoDir), {recursive: true});
+                await avatar.mv(path.resolve(process.cwd(), 'public', photoDir, photoName));
+                await userService.updateUser(id, {photo: `/${photoDir}/${photoName}`});
+            }
 
             await emailService.sendMail(
                 user.email,
