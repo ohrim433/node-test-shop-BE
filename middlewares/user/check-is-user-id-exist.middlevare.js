@@ -3,7 +3,7 @@ const Joi = require('joi');
 const {responceStatusCodes} = require('../../constants');
 const {ErrorHandler, errors: {NOT_FOUND, NOT_VALID_ID}} = require('../../errors');
 const {userService} = require('../../services');
-const {utilsValidators: {idValidationSchema}} = require('../../validators');
+const {idValidationSchema} = require('../../validators');
 
 module.exports = async (req, res, next) => {
     try {

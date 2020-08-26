@@ -11,7 +11,7 @@ class UserService {
 
     async createUser(user) {
         const UserModel = await db.getModel(USER);
-        UserModel.create(user);
+        return UserModel.create(user);
     }
 
     async getUserByParams(params) {
@@ -29,9 +29,9 @@ class UserService {
         return UserModel.destroy({where: params});
     }
 
-    async updateUser(id, newUser) {
+    async updateUser(id, newUserFields) {
         const UserModel = await db.getModel(USER);
-        return UserModel.update(newUser, {where: {id}});
+        return UserModel.update(newUserFields, {where: {id}});
     }
 }
 

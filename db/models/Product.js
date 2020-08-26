@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
             price: {
                 type: DataTypes.DOUBLE,
                 allowNull: false
+            },
+            createdBy: {
+                type: DataTypes.INTEGER,
+            },
+            photo: {
+                type: DataTypes.STRING
             }
         },
         {

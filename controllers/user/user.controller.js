@@ -1,6 +1,6 @@
-const {emailActions, responceStatusCodes} = require('../../constants');
+const {dbNames: {DB_USERS_TABLE}, emailActions, responceStatusCodes} = require('../../constants');
 const {ErrorHandler, errors: {NOT_FOUND}} = require('../../errors');
-const {checkHashedPasswords, hashPassword} = require('../../helpers');
+const {checkHashedPasswords, hashPassword, fileUpload} = require('../../helpers');
 const {emailService, userService} = require('../../services');
 
 module.exports = {
@@ -13,10 +13,15 @@ module.exports = {
     createUser: async (req, res, next) => {
         try {
             const user = req.body;
+            const [avatar] = req.photos;
 
             user.password = await hashPassword(user.password);
 
-            await userService.createUser(user);
+            const {id} = await userService.createUser(user);
+
+            if (avatar) {
+                await fileUpload(avatar, 'users', 'photos', DB_USERS_TABLE, id);
+            }
 
             await emailService.sendMail(
                 user.email,
@@ -24,7 +29,7 @@ module.exports = {
                 {userName: user.name}
             );
 
-            res.sendStatus(201);  // The HTTP 201 Created success status response code
+            res.sendStatus(responceStatusCodes.CREATED);
         } catch (e) {
             next(e);
         }
@@ -46,7 +51,7 @@ module.exports = {
                 emailActions.USER_DELETE,
                 {userName: user.name});
 
-            res.sendStatus(204);
+            res.sendStatus(responceStatusCodes.NO_CONTENT);
         } catch (e) {
             next(e);
         }
@@ -66,8 +71,7 @@ module.exports = {
                 emailActions.USER_UPDATE,
                 {userId, userName: user.name, userAge: user.age});
 
-            // The HTTP 200 OK success status response code indicates that the request has succeeded
-            res.sendStatus(200)
+            res.sendStatus(responceStatusCodes.OK);
         } catch (e) {
             next(e);
         }

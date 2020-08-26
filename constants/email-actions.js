@@ -6,4 +6,6 @@ module.exports = {
     USER_DELETE: '3',
     USER_REGISTER: '4',
     USER_UPDATE: '5',
+
+    PRODUCT_PHOTO_MISSED: '6'
 }

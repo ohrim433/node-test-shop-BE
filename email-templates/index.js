@@ -11,6 +11,11 @@ module.exports = {
         templateFileName: emailTemplatesNames.DELETE_PRODUCT
     },
 
+    [emailActions.PRODUCT_PHOTO_MISSED]: {
+        subject: emailSubjects.PRODUCT_PHOTO_MISSED,
+        templateFileName: emailTemplatesNames.PRODUCT_PHOTO_MISSED
+    },
+
     [emailActions.PRODUCT_UPDATE]: {
         subject: emailSubjects.UPDATE_PRODUCT_SUBJECT,
         templateFileName: emailTemplatesNames.UPDATE_PRODUCT

@@ -1,11 +1,14 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
 const {authRouter, productRouter, userRouter} = require('./routes');
 
 const app = express();
 
 const {PORT} = require('./config/index');
+const {croneRun} = require('./cron');
 
 const db = require('./db').getInstance();
 db.setModels();
@@ -14,7 +17,11 @@ db.setModels();
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use(fileUpload({}));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('short'));
+
+croneRun();
 
 app.use('/product', productRouter);
 app.use('/user', userRouter);
