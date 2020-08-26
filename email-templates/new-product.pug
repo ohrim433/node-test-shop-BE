@@ -1,0 +1,9 @@
+extends template
+block content
+    div.w-800.message
+        p Hello, #{userName}!
+        | You created a new product #{productTitle} with next data:
+        ul
+            li title: #{productTitle}
+            li type: #{productType}
+            li price: #{productPrice}

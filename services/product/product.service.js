@@ -1,33 +1,33 @@
+const db = require('../../db').getInstance();
+
+const {modelNames: {PRODUCT}} = require('../../constants');
+
 class ProductService {
 
-    productIsExist(productsList, id) {
-        if (!id) return false;
-
-        const getProductIndex = productsList.findIndex(product => product.id === id);
-        return (getProductIndex > -1);
+    async getProducts() {
+        const ProductModel = await db.getModel(PRODUCT);
+        return ProductModel.findAll({});
     }
 
-    createNewProduct(product, productsList) {
-        productsList.push(product);
+    async createProduct(product) {
+        const ProductModel = await db.getModel(PRODUCT);
+        ProductModel.create(product);
     }
 
-    getAllProducts(productsList) {
-        return productsList;
+    async getProductById(id) {
+        const ProductModel = await db.getModel(PRODUCT);
+        return ProductModel.findByPk(id);
     }
 
-    getSingleProduct(productsList, id) {
-        return productsList.find(product => product.id === id);
+    async deleteByParams(params) {
+        const ProductModel = await db.getModel(PRODUCT);
+        return ProductModel.destroy({where: params});
     }
 
-    updateProduct(productsList, productId, newProduct) {
-        const {id, title, type, price} = newProduct;
-        return productsList[productId] = {...productsList[productId], id, title, type, price};
+    async updateProduct(id, newProduct) {
+        const ProductModel = await db.getModel(PRODUCT);
+        return ProductModel.update(newProduct, {where: {id}});
     }
-
-    deleteProduct(productsList, productId) {
-        return productsList.filter(product => product.id !== productId);
-    }
-
 }
 
 module.exports = new ProductService;
